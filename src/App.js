@@ -3,8 +3,8 @@ import "./App.css";
 import SingleBlog from "./pages/SingleBlog";
 import CreateBlogForm from "./pages/CreateBlogForm";
 import UpdateBlogForm from "./pages/UpdateBlogForm";
-const urlEndpoint = "http://localhost:4000";
-// const urlEndpoint = process.env.REACT_APP_URL_ENDPOINT;
+// const urlEndpoint = "http://localhost:4000";
+const urlEndpoint = process.env.REACT_APP_URL_ENDPOINT;
 
 function App() {
   const [blogs, setBlogs] = useState([]);
@@ -44,7 +44,11 @@ function App() {
           urlEndpoint={urlEndpoint}
           setShouldRefetch={setShouldRefetch}
         />
-        <SingleBlog urlEndpoint={urlEndpoint} blogs={blogs} />
+        <SingleBlog
+          urlEndpoint={urlEndpoint}
+          blogs={blogs}
+          setShouldRefetch={setShouldRefetch}
+        />
         <div className='url-params'>
           <label>Limit</label>
           <input

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 const SingleBlog = (props) => {
   const { urlEndpoint } = props;
-  const { blogs } = props;
+  const { setShouldRefetch } = props;
   const [newBlogs, setNewBlogs] = useState([]);
   const [singleBlog, setSingleBlog] = useState({});
 
@@ -30,6 +30,19 @@ const SingleBlog = (props) => {
     };
     fetchBlog();
   }, [id]);
+
+  const handleDeleteBlog = async () => {
+    setShouldRefetch(true);
+    const res = await fetch(`${urlEndpoint}/blogs/delete-one/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const deletedLoad = await res.json();
+    console.log(deletedLoad);
+    setShouldRefetch(false);
+  };
 
   return (
     <div>
@@ -60,6 +73,13 @@ const SingleBlog = (props) => {
           );
         })}
       </select>
+      <button
+        onClick={(e) => {
+          handleDeleteBlog();
+        }}
+      >
+        Delete this id
+      </button>
       <hr />
     </div>
   );
