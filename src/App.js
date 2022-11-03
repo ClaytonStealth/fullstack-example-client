@@ -4,6 +4,7 @@ import SingleBlog from "./pages/SingleBlog";
 import CreateBlogForm from "./pages/CreateBlogForm";
 import UpdateBlogForm from "./pages/UpdateBlogForm";
 const urlEndpoint = "http://localhost:4000";
+// const urlEndpoint = process.env.REACT_APP_URL_ENDPOINT;
 
 function App() {
   const [blogs, setBlogs] = useState([]);
@@ -14,7 +15,7 @@ function App() {
 
   useEffect(() => {
     const fetchBlogs = async () => {
-      const result = await fetch(`${urlEndpoint}/blogs/all`); //${urlParamString}
+      const result = await fetch(`${urlEndpoint}/blogs/all${urlParamString}`);
       const fetchedBlogsPayload = await result.json();
       setBlogs(fetchedBlogsPayload.blogs);
     };
@@ -33,6 +34,7 @@ function App() {
   return (
     <div className='App'>
       <header className='App-header'>
+        <h2>{shouldRefetch && "Please waitm we are refetching the data"}</h2>
         <UpdateBlogForm
           urlEndpoint={urlEndpoint}
           blogs={blogs}

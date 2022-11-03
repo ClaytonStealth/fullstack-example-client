@@ -8,25 +8,29 @@ const UpdateBlogForm = (props) => {
   const [singleBlogTitle, setSingleBlogTitle] = useState("");
   const [singleBlogText, setSingleBlogText] = useState("");
   const [singleBlogAuthor, setSingleBlogAuthor] = useState("");
-  const [updatedBlog, setUpdatedBlog] = useState({});
+  const [category, setCategory] = useState("");
+  const [categories, setCategories] = useState([]);
 
   const params = useParams();
   const [id, setId] = useState(params.id);
   const handleUpdateBlog = async () => {
-    setShouldRefetch(false);
+    setShouldRefetch(true);
     const res = await fetch(`${urlEndpoint}/blogs/update-one/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        title: singleBlog.title,
-        text: singleBlog.text,
+        title: singleBlogTitle,
+        text: singleBlogText,
+        author: singleBlogAuthor,
+        categories: categories,
+        lastModified: new Date(),
       }),
     });
     const blogPayload = await res.json();
     console.log(blogPayload);
-    setShouldRefetch(true);
+    setShouldRefetch(false);
   };
 
   useEffect(() => {
@@ -68,19 +72,45 @@ const UpdateBlogForm = (props) => {
       <p>{singleBlog.text}</p>
       <label>Title</label>
       <input
-        // value={singleBlogTitle}
+        value={singleBlogTitle}
         type='text'
         onChange={(e) => {
-          setSingleBlog({ ...singleBlog, title: e.target.value });
+          // setSingleBlog({ ...singleBlog, title: e.target.value });
+          setSingleBlogTitle(e.target.value);
+        }}
+      />
+      <label>Author</label>
+      <input
+        value={singleBlogAuthor}
+        type='text'
+        onChange={(e) => {
+          // setSingleBlog({ ...singleBlog, title: e.target.value });
+          setSingleBlogAuthor(e.target.value);
         }}
       />
       <label>Text</label>
       <textarea
-        // value={singleBlogText}
+        value={singleBlogText}
         onChange={(e) => {
-          setSingleBlog({ ...singleBlog, text: e.target.value });
+          // setSingleBlog({ ...singleBlog, text: e.target.value });
+          setSingleBlogText(e.target.value);
         }}
       />
+      <label>Categories</label>
+      <input
+        type='text'
+        onChange={(e) => {
+          setCategory(e.target.value);
+        }}
+      />
+      <button
+        onClick={() => {
+          const newCategories = [...categories, category];
+          setCategories(newCategories);
+        }}
+      >
+        Add Category
+      </button>
       <button
         onClick={() => {
           handleUpdateBlog();

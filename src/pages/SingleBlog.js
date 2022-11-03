@@ -4,12 +4,11 @@ import { useParams } from "react-router-dom";
 const SingleBlog = (props) => {
   const { urlEndpoint } = props;
   const { blogs } = props;
-  const { generateUrlParams } = props;
   const [newBlogs, setNewBlogs] = useState([]);
   const [singleBlog, setSingleBlog] = useState({});
 
   const params = useParams();
-  const [id, setId] = useState(params.id);
+  const [id, setId] = useState(params.id || "");
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -38,6 +37,7 @@ const SingleBlog = (props) => {
       <p>{singleBlog.title}</p>
       <p>{singleBlog.id}</p>
       <p>{singleBlog.text}</p>
+      <p>{singleBlog.categories}</p>
       <input
         value={id}
         type='text'
